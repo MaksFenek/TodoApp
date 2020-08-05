@@ -27,6 +27,8 @@
       width: 80vw;
       border: 1px solid #ffecb3;
       padding: 5px 10px;
+      color: #ffa726;
+      font-size: 20px;
       &:focus {
         outline: none;
       }
@@ -63,6 +65,8 @@
       text-align: left;
       font-size: 20px;
       margin-bottom: 10px;
+      transition: 0.3s all ease;
+      box-shadow: 5px 5px 10px rgba(202, 199, 199, 0.4);
     }
 
     h4 {

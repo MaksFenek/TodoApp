@@ -32,6 +32,14 @@ export default function TodoList() {
     }
   };
 
+  const handleAddEnter = ({ key }) => {
+    if (inputArea.current.value !== '' && key === 'Enter') {
+      const newTodo = addTodoAction(inputArea.current.value);
+      dispatch(newTodo);
+      inputArea.current.value = '';
+    }
+  };
+
   /* Changing isCompleted in a task */
   const handleChange = (e) => {
     const newChange = changeCompletedAction(+e.target.value);
@@ -56,6 +64,7 @@ export default function TodoList() {
             type='text'
             placeholder='Add new todo'
             ref={inputArea}
+            onKeyPress={handleAddEnter}
           />
           <button className='todo-form-btn' type='submit' onClick={handleAdd}>
             Add
