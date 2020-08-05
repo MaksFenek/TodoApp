@@ -1,16 +1,26 @@
+// ==== TypeScript types ====
+export interface StateType {
+  id: number;
+  value: string;
+  isCompleted: boolean;
+}
+
 // ==== Initial state ====
-let initialState = [];
+let initialState: Array<StateType> = [];
 
 // Get the Tasks array from local storage if it exist
 if (localStorage.getItem('Tasks')) {
   // Adding Tasks array item to Initial state
-  JSON.parse(localStorage.getItem('Tasks')).map((item) =>
+  JSON.parse(localStorage.getItem('Tasks')!).map((item: StateType) =>
     initialState.push(item)
   );
 }
 // ==== Reducers ====
 
-export default (state = initialState, { type, payload }) => {
+export default (
+  state = initialState,
+  { type, payload }: { type: string; payload: StateType | number }
+) => {
   switch (type) {
     case 'ADD_TODO':
       // Set a new task at local storage array
@@ -19,9 +29,9 @@ export default (state = initialState, { type, payload }) => {
 
     case 'CHANGE_COMPLETED':
       // Get the local storage array
-      let storageArr = JSON.parse(localStorage.getItem('Tasks'));
+      let storageArr = JSON.parse(localStorage.getItem('Tasks')!);
       // Adding the new local storage Array with item coincide with a received key
-      let newStorage = storageArr.map((item) => {
+      let newStorage = storageArr.map((item: StateType) => {
         // Searching an task with the same id as payload
         if (item.id === payload) {
           // Changing the flag isCompleted in found item
@@ -46,14 +56,16 @@ export default (state = initialState, { type, payload }) => {
 
     case 'DELETE_TODO':
       // Get the local storage array
-      let storage = JSON.parse(localStorage.getItem('Tasks'));
+      let storage = JSON.parse(localStorage.getItem('Tasks')!);
       // Finding in local storage the items don't coincide with a received key
-      storage.filter((item) => {
+      storage.filter((item: StateType): void => {
         if (item.id !== payload) {
           // Adding the new local storage Array with items don't coincide with a received key
           localStorage.setItem(
             'Tasks',
-            JSON.stringify(storage.filter((task) => task.id !== payload))
+            JSON.stringify(
+              storage.filter((task: StateType) => task.id !== payload)
+            )
           );
         } else if (storage.length === 1) {
           localStorage.removeItem('Tasks');

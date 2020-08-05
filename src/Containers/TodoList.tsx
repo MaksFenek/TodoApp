@@ -2,7 +2,11 @@
 import React, { useRef } from 'react';
 
 // ==== Redux imports ====
-import { useSelector, useDispatch } from 'react-redux';
+import {
+  useSelector as useReduxSelector,
+  TypedUseSelectorHook,
+  useDispatch,
+} from 'react-redux';
 import {
   addTodoAction,
   changeCompletedAction,
@@ -12,19 +16,24 @@ import {
 // ==== Style imports ====
 import '../Styles/todolist.scss';
 
+// ==== TypeScript types ====
+import { StateType } from '../_Reducers';
+
+// ==== Main ====
 export default function TodoList() {
   // ==== Redux hooks ====
+  const useSelector: TypedUseSelectorHook<Array<StateType>> = useReduxSelector;
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
   // ==== React hooks ====
-  const inputArea = useRef(null);
+  const inputArea = useRef<HTMLInputElement>(null!);
 
   // ==== Handle actions ====
   /* Adding a new task to store */
   const handleAdd = () => {
-    if (inputArea.current.value !== '') {
-      const newTodo = addTodoAction(inputArea.current.value);
+    if (inputArea.current!.value !== '') {
+      const newTodo = addTodoAction(inputArea.current!.value);
       dispatch(newTodo);
       inputArea.current.value = '';
     } else {
@@ -32,7 +41,9 @@ export default function TodoList() {
     }
   };
 
-  const handleAddEnter = ({ key }) => {
+  const handleAddEnter = ({
+    key,
+  }: React.KeyboardEvent<HTMLButtonElement | HTMLInputElement>): void => {
     if (inputArea.current.value !== '' && key === 'Enter') {
       const newTodo = addTodoAction(inputArea.current.value);
       dispatch(newTodo);
@@ -41,14 +52,14 @@ export default function TodoList() {
   };
 
   /* Changing isCompleted in a task */
-  const handleChange = (e) => {
-    const newChange = changeCompletedAction(+e.target.value);
+  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
+    const newChange = changeCompletedAction(+e.currentTarget.value);
     dispatch(newChange);
   };
 
   /* Deleting a task */
-  const handleDelete = (e) => {
-    const newDelete = deleteTodoAction(+e.target.value);
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    const newDelete = deleteTodoAction(+e.currentTarget.id);
     dispatch(newDelete);
   };
 
@@ -66,13 +77,13 @@ export default function TodoList() {
             ref={inputArea}
             onKeyPress={handleAddEnter}
           />
-          <button className='todo-form-btn' type='submit' onClick={handleAdd}>
+          <button className='todo-form-btn' type='button' onClick={handleAdd}>
             Add
           </button>
         </div>
         <div className='todo-list'>
           <ul>
-            {state.map(({ id, value, isCompleted }) => (
+            {state.map(({ id, value, isCompleted }: StateType) => (
               <li key={id} className={isCompleted ? 'completed' : ''}>
                 <input
                   value={id}
@@ -81,7 +92,7 @@ export default function TodoList() {
                   onChange={handleChange}
                 />
                 <h4>{value}</h4>
-                <button value={id} type='button' onClick={handleDelete}>
+                <button id={`${id}`} type='button' onClick={handleDelete}>
                   &times;
                 </button>
               </li>
