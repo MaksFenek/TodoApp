@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar should render corrently 1`] = `
+<nav
+  className="nav"
+>
+  <div
+    className="nav-logo"
+  >
+    <h1>
+      ToDo App
+    </h1>
+  </div>
+</nav>
+`;

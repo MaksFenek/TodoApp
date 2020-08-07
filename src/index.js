@@ -19,11 +19,11 @@ const store = createStore(rootReducer);
 
 ReactDOM.render(
   // Creating a provider for redux store
-  <Provider store={store}>
-    <React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
       <App />
-    </React.StrictMode>
-  </Provider>,
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

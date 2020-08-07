@@ -23,7 +23,7 @@ import { StateType } from '../_Reducers';
 export default function TodoList() {
   // ==== Redux hooks ====
   const useSelector: TypedUseSelectorHook<Array<StateType>> = useReduxSelector;
-  const state = useSelector((state) => state);
+  const state = useSelector((store) => store);
   const dispatch = useDispatch();
 
   // ==== React hooks ====
@@ -91,7 +91,7 @@ export default function TodoList() {
                   checked={isCompleted}
                   onChange={handleChange}
                 />
-                <h4>{value}</h4>
+                <h4 className='text'>{value}</h4>
                 <button id={`${id}`} type='button' onClick={handleDelete}>
                   &times;
                 </button>
